@@ -1,54 +1,6 @@
-<!-- <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
-<template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
-</template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style> -->
-
-
-
 <script>
+
+import { VueEcharts } from 'vue3-echarts';
 
 import axios from "axios"
 export default{
@@ -58,6 +10,68 @@ export default{
       password: "",
       age:1,
       info:[],
+      option:{
+        title: {
+                text: '折线图堆叠'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['周一','周二','周三','周四','周五','周六','周日']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name:'邮件营销',
+                    type:'line',
+                    stack: '总量',
+                    data:[120, 132, 101, 134, 90, 230, 210]
+                },
+                {
+                    name:'联盟广告',
+                    type:'line',
+                    stack: '总量',
+                    data:[220, 182, 191, 234, 290, 330, 310]
+                },
+                {
+                    name:'视频广告',
+                    type:'line',
+                    stack: '总量',
+                    data:[150, 232, 201, 154, 190, 330, 410]
+                },
+                {
+                    name:'直接访问',
+                    type:'line',
+                    stack: '总量',
+                    data:[320, 332, 301, 334, 390, 330, 320]
+                },
+                {
+                    name:'搜索引擎',
+                    type:'line',
+                    stack: '总量',
+                    data:[820, 932, 901, 934, 1290, 1330, 1320]
+                }
+            ]
+      }
     }
   },
 
@@ -72,7 +86,12 @@ export default{
         console.error("fail to get uesr data")
       })
     }
-  }
+  },
+  components: {
+        VueEcharts,
+        // 'v-chart': VueEcharts
+    },
+
 }
 
 </script>
@@ -80,12 +99,8 @@ export default{
 
 
 <template>
-  <div>
-    <button @click="get()">get the data from user table</button>
-  </div>
-
-  <li v-for="(item, index) in info">
-     datastr: - {{ index }} - {{ item.name }} - {{item.password}} - {{item.age}}
-  </li>
+  <VueEcharts :option="option" style="height: 500px" ref="chart" />
+  
+  <!-- <v-chart :option="option"  style="height: 500px" ref="chart" ></v-chart> -->
 
 </template>
